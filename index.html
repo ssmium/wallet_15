@@ -60,8 +60,10 @@ body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);colo
 /* 버튼 */
 .btn{width:100%;padding:16px;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
 .btn:active{transform:scale(.98);opacity:.9}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-primary{background:var(--primary);color:white}
 .btn-green{background:var(--green);color:white}
+.btn-light{background:var(--gray-100);color:var(--gray-600)}
 .btn-sm{padding:10px 16px;font-size:14px;border-radius:8px;width:auto}
 
 /* 내역 아이템 */
@@ -132,7 +134,7 @@ body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);colo
 /* 모달 */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:none;align-items:flex-end}
 .modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:24px 24px 0 0;width:100%;padding:36px 24px 52px;animation:slideUp .3s}
+.modal{background:var(--white);border-radius:24px 24px 0 0;width:100%;padding:36px 24px 52px;animation:slideUp .3s;max-height:90vh;overflow-y:auto}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal-title{font-size:18px;font-weight:700;margin-bottom:28px}
 .modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-400)}
@@ -145,6 +147,40 @@ body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);colo
 .sync-info{flex:1}
 .sync-title{font-size:14px;font-weight:700}
 .sync-sub{font-size:12px;opacity:.8;margin-top:2px}
+
+/* 캡쳐 카드 (입력 탭 상단) */
+.capture-card{background:linear-gradient(135deg,#191F28,#333D4B);border-radius:var(--radius);padding:18px;color:white;display:flex;align-items:center;gap:14px;margin-bottom:12px;cursor:pointer;box-shadow:0 4px 16px rgba(25,31,40,.15)}
+.capture-card-icon{font-size:30px;flex-shrink:0}
+.capture-card-info{flex:1}
+.capture-card-title{font-size:15px;font-weight:700;margin-bottom:3px}
+.capture-card-sub{font-size:12px;opacity:.7}
+.capture-card-arrow{font-size:18px;opacity:.7}
+
+/* 캡쳐 모달 내부 */
+.cap-upload{border:2px dashed var(--gray-200);border-radius:var(--radius);padding:36px 16px;text-align:center;cursor:pointer;background:var(--gray-100);margin-bottom:12px;transition:all .15s}
+.cap-upload:active{background:var(--primary-light);border-color:var(--primary)}
+.cap-upload-icon{font-size:32px;margin-bottom:8px}
+.cap-upload-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.cap-upload-desc{font-size:12px;color:var(--gray-400)}
+.cap-preview{position:relative;border-radius:var(--radius-sm);overflow:hidden;background:var(--gray-100);margin-bottom:12px}
+.cap-preview img{width:100%;max-height:240px;object-fit:contain;display:block}
+.cap-preview-x{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px}
+.cap-loading{text-align:center;padding:24px 16px;color:var(--gray-600);font-size:13px;background:var(--gray-100);border-radius:var(--radius-sm);margin:12px 0}
+.cap-spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--gray-200);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cap-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.cap-ignored{padding:9px 12px;background:var(--gray-100);border-radius:8px;font-size:12px;color:var(--gray-600);margin-bottom:12px}
+.cap-tx{padding:12px;border-radius:var(--radius-sm);background:var(--gray-100);margin-bottom:8px}
+.cap-tx.ig{opacity:.5}
+.cap-tx-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}
+.cap-tx-merchant{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cap-tx-time{font-size:11px;color:var(--gray-400);margin-top:2px}
+.cap-tx-amount{font-size:14px;font-weight:800;white-space:nowrap}
+.cap-tx-amount.in{color:var(--green)}
+.cap-tx-amount.out{color:var(--red)}
+.cap-tx-amount.ig{color:var(--gray-400)}
+.cap-tx-controls{display:flex;gap:5px;flex-wrap:wrap}
+.cap-tx-controls select{font-size:11px;padding:4px 7px;border-radius:6px;border:1px solid var(--gray-200);background:white;font-family:inherit;font-weight:600;color:var(--gray-600);cursor:pointer}
 
 /* 토스트 */
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--gray-900);color:white;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:500;z-index:300;opacity:0;transition:opacity .3s;white-space:nowrap}
@@ -186,6 +222,16 @@ body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);colo
       <div class="sync-sub" id="syncSub">탭해서 시트 ID 입력</div>
     </div>
     <span>→</span>
+  </div>
+
+  <!-- 🆕 토스 캡쳐 분석 카드 -->
+  <div class="capture-card" onclick="openCapture()">
+    <div class="capture-card-icon">📸</div>
+    <div class="capture-card-info">
+      <div class="capture-card-title">토스 캡쳐로 자동 입력</div>
+      <div class="capture-card-sub">한 번에 여러 거래 분석 · AI</div>
+    </div>
+    <span class="capture-card-arrow">→</span>
   </div>
 
   <div class="card">
@@ -261,9 +307,9 @@ body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);colo
 <div class="modal-overlay" id="cfgModal" onclick="closeModalOut(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-title">⚙️ Google Sheets 연동</div>
+    <div class="modal-title">⚙️ 연동 설정</div>
     <div class="form-group">
-      <label class="form-label">API Key</label>
+      <label class="form-label">Google Sheets API Key</label>
       <input type="text" class="form-input" id="cfgApiKey" placeholder="Google Cloud Console에서 발급">
     </div>
     <div class="form-group">
@@ -274,8 +320,60 @@ body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);colo
       <label class="form-label">Spreadsheet ID</label>
       <input type="text" class="form-input" id="cfgSheetId" placeholder="URL의 /d/ 뒤 ID">
     </div>
+    <div class="divider"></div>
+    <div class="form-group">
+      <label class="form-label">🤖 Gemini API Key (캡쳐 분석용)</label>
+      <input type="text" class="form-input" id="cfgGeminiKey" placeholder="AIza...">
+    </div>
     <button class="btn btn-green" onclick="saveConfig()" style="margin-bottom:10px">저장</button>
     <button class="btn btn-primary" onclick="loadSheet()">☁️ 시트에서 불러오기</button>
+  </div>
+</div>
+
+<!-- 📸 캡쳐 분석 모달 -->
+<div class="modal-overlay" id="capModal" onclick="closeCapOut(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCap()">✕</button>
+    <div class="modal-title">📸 토스 캡쳐 분석</div>
+
+    <div id="cap-step-upload">
+      <label class="cap-upload" for="cap-file">
+        <div class="cap-upload-icon">📷</div>
+        <div class="cap-upload-title">캡쳐 이미지 올리기</div>
+        <div class="cap-upload-desc">토스 카드 사용내역 화면 한 장</div>
+      </label>
+      <input type="file" id="cap-file" accept="image/*" style="display:none" onchange="capUpload(this)">
+    </div>
+
+    <div id="cap-step-preview" style="display:none">
+      <div class="cap-preview">
+        <img id="cap-preview-img">
+        <button class="cap-preview-x" onclick="capReset()">✕</button>
+      </div>
+      <button class="btn btn-primary" id="cap-analyze-btn" onclick="capAnalyze()">✨ AI로 분석하기</button>
+    </div>
+
+    <div id="cap-loading" class="cap-loading" style="display:none">
+      <span class="cap-spinner"></span>
+      <span>거래내역을 읽고 있어요...</span>
+    </div>
+
+    <div id="cap-result" style="display:none">
+      <div class="cap-summary">
+        <div class="summary-box out">
+          <div class="summary-label">💸 지출</div>
+          <div class="summary-val" id="cap-total-exp">0원</div>
+        </div>
+        <div class="summary-box in">
+          <div class="summary-label">🎁 캐시백</div>
+          <div class="summary-val" id="cap-total-rew">0원</div>
+        </div>
+      </div>
+      <div class="cap-ignored" id="cap-ignored-note" style="display:none"></div>
+      <div id="cap-tx-list" style="margin-bottom:14px"></div>
+      <button class="btn btn-green" onclick="capCommit()" id="cap-commit-btn" style="margin-bottom:8px">📥 모두 기록하기</button>
+      <button class="btn btn-light" onclick="capReset()">새로 시작</button>
+    </div>
   </div>
 </div>
 
@@ -283,12 +381,12 @@ body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);colo
 
 <script>
 const CATS = {
-  '수입':    ['월급','기타수입'],
+  '수입':    ['월급','기타수입','카드캐시백'],
   '고정지출':['전세이자①','전세이자②','교통비','가스비','전기세','수도세','통신비','보험료'],
   '저축':    ['1적금','2적금'],
   '변동지출':['식비','카페/외식','쇼핑','문화/여가','기타변동'],
 };
-const ICONS = {'월급':'💵','기타수입':'💰','전세이자①':'🏠','전세이자②':'🏠','교통비':'🚌','가스비':'🔥','전기세':'⚡','수도세':'💧','통신비':'📱','보험료':'🛡️','1적금':'🏦','2적금':'🏦','식비':'🍚','카페/외식':'☕','쇼핑':'🛍️','문화/여가':'🎭','기타변동':'📦'};
+const ICONS = {'월급':'💵','기타수입':'💰','카드캐시백':'🎁','전세이자①':'🏠','전세이자②':'🏠','교통비':'🚌','가스비':'🔥','전기세':'⚡','수도세':'💧','통신비':'📱','보험료':'🛡️','1적금':'🏦','2적금':'🏦','식비':'🍚','카페/외식':'☕','쇼핑':'🛍️','문화/여가':'🎭','기타변동':'📦'};
 const BG    = {'수입':'#EDFAF4','고정지출':'#FFF0F1','저축':'#FFF8EC','변동지출':'#FFF0F1'};
 const TYPE_CLS = {'수입':'active-in','고정지출':'active-fix','저축':'active-save','변동지출':'active-var'};
 
@@ -308,6 +406,7 @@ window.onload = () => {
     updateBanner(true);
     setTimeout(loadSheet, 600);
   }
+  if (cfg.geminiKey) document.getElementById('cfgGeminiKey').value = cfg.geminiKey;
   renderToday();
 };
 
@@ -422,16 +521,11 @@ function renderMonthly() {
   initSwipe();
 }
 
-// ── 전세 탭 (구글 시트에서 직접 읽기)
+// ── 전세 탭
 async function loadJeonse() {
   const el = document.getElementById('jState');
-
-  // CSV 방식: 설정 없어도 전세 데이터 불러오기 가능
-
   el.innerHTML=`<div class="card state-box"><div class="state-icon">⏳</div><div class="state-msg">구글 시트에서 불러오는 중...</div></div>`;
-
   try {
-    // Google Apps Script 경유 (CORS 없음!)
     const res  = await fetch('https://script.google.com/macros/s/AKfycbwjUm--XYhEPutrYubibpyzuyLUINIWi9Z0Bdu0z_N9NE6kMc7i-JQTtbJbLRaf8QcCeA/exec');
     if (!res.ok) throw new Error('Apps Script 오류: ' + res.status);
     const data = await res.json();
@@ -443,12 +537,9 @@ async function loadJeonse() {
     const SEVERANCE = p(data.퇴직금 ?? data.severance);
     const total     = LOAN+DEPOSIT+CURRENT+SEVERANCE;
     const pct       = Math.min(total/TARGET*100,100);
-
-    // 8월 만기
     const m1=1000000*8, m1i=Math.round(1000000*8*0.023/12*4);
     const m2=300000*8,  m2i=Math.round(300000*8*0.048/12*4);
     const matTotal=m1+m1i+m2+m2i;
-    // 2027년 2월
     const npay=10000000, npayI=Math.round(npay*0.04/12*6);
     const newSave=(1000000+300000)*6;
     const feb2027=(npay+npayI)+newSave;
@@ -477,16 +568,15 @@ async function loadJeonse() {
         <div class="scenario-item"><span class="scenario-label">${l}</span><span class="scenario-val${i===3?(isOk?' ok':' warn'):i===2?' highlight':''}">${typeof v==='string'?v:fmt(v)}</span></div>`).join('')}
       </div>`;
     setTimeout(()=>{ const g=document.getElementById('gFill'); if(g) g.style.width=pct+'%'; },100);
-
   } catch(e) {
     const debugUrl = `https://sheets.googleapis.com/v4/spreadsheets/${cfg.sheetId}/values/${encodeURIComponent('전세자금!B4:B8')}?key=${cfg.apiKey}`;
-  el.innerHTML=`<div class="card state-box">
-    <div class="state-icon">⚠️</div>
-    <div class="state-err">${e.message}</div>
-    <div style="font-size:11px;color:var(--gray-400);margin-bottom:16px;word-break:break-all">시트ID: ${cfg.sheetId||'없음'}</div>
-    <button class="btn btn-primary btn-sm" onclick="loadJeonse()" style="margin:0 auto 10px;display:block">다시 시도</button>
-    <a href="${debugUrl}" target="_blank" style="display:block;text-align:center;font-size:12px;color:var(--primary)">🔗 API 직접 테스트</a>
-  </div>`;
+    el.innerHTML=`<div class="card state-box">
+      <div class="state-icon">⚠️</div>
+      <div class="state-err">${e.message}</div>
+      <div style="font-size:11px;color:var(--gray-400);margin-bottom:16px;word-break:break-all">시트ID: ${cfg.sheetId||'없음'}</div>
+      <button class="btn btn-primary btn-sm" onclick="loadJeonse()" style="margin:0 auto 10px;display:block">다시 시도</button>
+      <a href="${debugUrl}" target="_blank" style="display:block;text-align:center;font-size:12px;color:var(--primary)">🔗 API 직접 테스트</a>
+    </div>`;
   }
 }
 
@@ -502,9 +592,9 @@ async function appendSheet(entry) {
       })
     });
     const result = await res.json();
-    if (result.status === 'ok') toast('☁️ 시트 저장 완료');
-    else toast('⚠️ ' + (result.message||'저장 실패'));
-  } catch(err) { toast('⚠️ ' + err.message); }
+    if (result.status !== 'ok') toast('⚠️ ' + (result.message||'저장 실패'));
+    return result;
+  } catch(err) { toast('⚠️ ' + err.message); throw err; }
 }
 
 async function loadSheet() {
@@ -532,7 +622,12 @@ async function loadSheet() {
 
 // ── 설정
 function saveConfig() {
-  cfg = { sheetId: document.getElementById('cfgSheetId').value.trim(), apiKey: document.getElementById('cfgApiKey').value.trim(), sheetName: document.getElementById('cfgSheetName').value.trim()||'일일가계부' };
+  cfg = {
+    sheetId:  document.getElementById('cfgSheetId').value.trim(),
+    apiKey:   document.getElementById('cfgApiKey').value.trim(),
+    sheetName:document.getElementById('cfgSheetName').value.trim()||'일일가계부',
+    geminiKey:document.getElementById('cfgGeminiKey').value.trim()
+  };
   localStorage.setItem('sol_c', JSON.stringify(cfg));
   updateBanner(!!cfg.sheetId);
   closeModal(); toast('✅ 저장 완료!');
@@ -545,6 +640,229 @@ function updateBanner(on) {
 function openModal()  { document.getElementById('cfgModal').classList.add('open'); }
 function closeModal() { document.getElementById('cfgModal').classList.remove('open'); }
 function closeModalOut(e) { if(e.target===document.getElementById('cfgModal')) closeModal(); }
+
+// ── 📸 캡쳐 분석 ────────────────────────────────
+let capImage = null;
+let capTransactions = [];
+
+function openCapture() {
+  if (!cfg.geminiKey) {
+    toast('⚙️ 설정에서 Gemini API 키를 먼저 입력해주세요');
+    setTimeout(openModal, 1500);
+    return;
+  }
+  capReset();
+  document.getElementById('capModal').classList.add('open');
+}
+function closeCap() { document.getElementById('capModal').classList.remove('open'); }
+function closeCapOut(e) { if(e.target===document.getElementById('capModal')) closeCap(); }
+
+function capUpload(input) {
+  const file = input.files[0];
+  if (!file || !file.type.startsWith('image/')) { toast('이미지 파일만 올릴 수 있어요'); return; }
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const dataUrl = ev.target.result;
+    capImage = { base64: dataUrl.split(',')[1], mimeType: file.type, preview: dataUrl };
+    document.getElementById('cap-preview-img').src = dataUrl;
+    document.getElementById('cap-step-upload').style.display = 'none';
+    document.getElementById('cap-step-preview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function capAnalyze() {
+  if (!capImage) return;
+  document.getElementById('cap-analyze-btn').disabled = true;
+  document.getElementById('cap-step-preview').style.display = 'none';
+  document.getElementById('cap-loading').style.display = 'block';
+
+  const today = new Date().toISOString().split('T')[0];
+  const prompt = `당신은 토스 카드 사용내역 캡쳐를 분석하는 전문가입니다.
+오늘 날짜: ${today}
+
+이미지에서 모든 거래 항목을 추출해서 JSON 배열로만 반환하세요.
+
+각 항목 필드:
+- date: "YYYY-MM-DD" (이미지에 "4월 27일" 같은 헤더가 있으면 그 아래 항목들에 적용. 헤더 위 항목은 헤더 날짜+1일 이상의 더 최근 날짜. 연도는 오늘 기준 추론)
+- time: "HH:MM"
+- merchant: 가맹점명 또는 거래 종류
+- amount: 정수 (양수=입금/리워드, 음수=출금/결제)
+- type: "변동지출" | "수입" | "ignore"
+- cat: 카테고리명
+- memo: 가맹점명 그대로 또는 빈 문자열
+
+분류 규칙:
+1. 실제 가맹점 결제(음수) → type: "변동지출"
+   카테고리:
+   - 식비: 마트, 슈퍼, 식자재, 편의점 식료품
+   - 카페/외식: 식당, 음식점, 카페, 디저트, 베이커리, 술집, 배달
+   - 쇼핑: 의류, 화장품, 올리브영, 다이소, 백화점, 온라인쇼핑
+   - 문화/여가: 영화관, 공연, 도서, 구독, 헬스장
+   - 기타변동: 약국, 미용실, 분류 애매한 것
+2. "카드 캐시백"(양수) → type: "수입", cat: "카드캐시백"
+3. "카드 캐시백 취소" → type: "ignore"
+4. "네이버페이" 충전/취소 → type: "ignore"
+5. 이미지 순서 그대로 보존
+
+오직 JSON 배열만 반환. 마크다운 없이.`;
+
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${cfg.geminiKey}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        contents: [{
+          parts: [
+            { inline_data: { mime_type: capImage.mimeType, data: capImage.base64 } },
+            { text: prompt }
+          ]
+        }],
+        generationConfig: { temperature: 0.1, responseMimeType: 'application/json' }
+      })
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`API ${res.status}: ${err.substring(0,100)}`);
+    }
+    const data = await res.json();
+    if (!data.candidates || !data.candidates[0]) throw new Error('AI 응답이 비어있어요');
+    const text = data.candidates[0].content.parts[0].text.trim();
+    capTransactions = JSON.parse(text);
+    if (!Array.isArray(capTransactions) || capTransactions.length === 0) {
+      throw new Error('거래내역을 찾지 못했어요');
+    }
+    renderCapResult();
+  } catch (e) {
+    toast('⚠️ ' + e.message);
+    document.getElementById('cap-loading').style.display = 'none';
+    document.getElementById('cap-step-preview').style.display = 'block';
+    document.getElementById('cap-analyze-btn').disabled = false;
+  }
+}
+
+function renderCapResult() {
+  document.getElementById('cap-loading').style.display = 'none';
+  document.getElementById('cap-result').style.display = 'block';
+
+  const expenses = capTransactions.filter(t => t.type === '변동지출');
+  const rewards  = capTransactions.filter(t => t.type === '수입');
+  const ignored  = capTransactions.filter(t => t.type === 'ignore');
+  const totalExp = expenses.reduce((s, t) => s + Math.abs(t.amount), 0);
+  const totalRew = rewards.reduce((s, t) => s + Math.abs(t.amount), 0);
+
+  document.getElementById('cap-total-exp').textContent = fmt(totalExp);
+  document.getElementById('cap-total-rew').textContent = '+' + fmt(totalRew);
+
+  const note = document.getElementById('cap-ignored-note');
+  if (ignored.length > 0) {
+    note.textContent = `💭 ${ignored.length}건은 노이즈로 제외 (캐시백 취소·NPay 충전 등)`;
+    note.style.display = 'block';
+  } else {
+    note.style.display = 'none';
+  }
+
+  const list = document.getElementById('cap-tx-list');
+  list.innerHTML = capTransactions.map((t, i) => capTxCard(t, i)).join('');
+
+  list.querySelectorAll('select[data-field]').forEach(sel => {
+    sel.addEventListener('change', (e) => {
+      const i = parseInt(e.target.getAttribute('data-i'));
+      const field = e.target.getAttribute('data-field');
+      capTransactions[i][field] = e.target.value;
+      // type 바꾸면 cat 기본값 재설정
+      if (field === 'type') {
+        if (capTransactions[i].type === '변동지출') capTransactions[i].cat = '기타변동';
+        else if (capTransactions[i].type === '수입') capTransactions[i].cat = '카드캐시백';
+      }
+      renderCapResult();
+    });
+  });
+}
+
+function capTxCard(t, i) {
+  const isIgnore = t.type === 'ignore';
+  const isReward = t.type === '수입';
+  const amountClass = isIgnore ? 'ig' : (isReward ? 'in' : 'out');
+  const amountStr = (isReward ? '+' : (isIgnore ? '' : '-')) + fmt(Math.abs(t.amount));
+
+  const typeOpts = ['변동지출', '수입', 'ignore'].map(d =>
+    `<option value="${d}" ${d === t.type ? 'selected' : ''}>${d === 'ignore' ? '무시' : d}</option>`
+  ).join('');
+
+  let catOpts = '';
+  if (!isIgnore) {
+    const cats = t.type === '수입' ? CATS['수입'] : CATS['변동지출'];
+    catOpts = cats.map(c =>
+      `<option value="${c}" ${c === t.cat ? 'selected' : ''}>${c}</option>`
+    ).join('');
+  }
+
+  return `
+    <div class="cap-tx ${isIgnore ? 'ig' : ''}" data-i="${i}">
+      <div class="cap-tx-top">
+        <div style="flex:1;min-width:0">
+          <div class="cap-tx-merchant">${!isIgnore ? (ICONS[t.cat]||'') + ' ' : ''}${escapeHtml(t.merchant)}</div>
+          <div class="cap-tx-time">${t.date} · ${t.time||''}</div>
+        </div>
+        <div class="cap-tx-amount ${amountClass}">${amountStr}</div>
+      </div>
+      <div class="cap-tx-controls">
+        <select data-field="type" data-i="${i}">${typeOpts}</select>
+        ${!isIgnore ? `<select data-field="cat" data-i="${i}">${catOpts}</select>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+async function capCommit() {
+  const valid = capTransactions.filter(t => t.type !== 'ignore');
+  if (valid.length === 0) { toast('추가할 거래가 없어요'); return; }
+
+  document.getElementById('cap-commit-btn').disabled = true;
+  let added = 0, sheetFails = 0;
+
+  for (const t of valid) {
+    const e = {
+      id: Date.now() + Math.random(),
+      date: t.date,
+      type: t.type,
+      cat: t.cat,
+      amount: Math.abs(t.amount),
+      memo: t.memo || t.merchant || '',
+      month: parseInt((t.date||'').split('-')[1]) || new Date().getMonth()+1
+    };
+    entries.push(e);
+    if (cfg.sheetId && cfg.apiKey) {
+      try { await appendSheet(e); }
+      catch (err) { sheetFails++; }
+    }
+    added++;
+  }
+
+  save();
+  const msg = sheetFails > 0
+    ? `✅ ${added}건 기록 (시트 ${sheetFails}건 실패)`
+    : `✅ ${added}건 기록됐어요!`;
+  toast(msg);
+  closeCap();
+  renderToday();
+  renderMonthly();
+}
+
+function capReset() {
+  capImage = null;
+  capTransactions = [];
+  const f = document.getElementById('cap-file');
+  if (f) f.value = '';
+  document.getElementById('cap-step-upload').style.display = 'block';
+  document.getElementById('cap-step-preview').style.display = 'none';
+  document.getElementById('cap-loading').style.display = 'none';
+  document.getElementById('cap-result').style.display = 'none';
+  document.getElementById('cap-analyze-btn').disabled = false;
+  document.getElementById('cap-commit-btn').disabled = false;
+}
 
 // ── 유틸
 function delEntry(id) {
@@ -585,6 +903,9 @@ function fmt(n) {
   if(n>=100000000) return (n/100000000).toFixed(1)+'억';
   if(n>=100000)    return (n/10000).toFixed(0)+'만원';
   return n.toLocaleString()+'원';
+}
+function escapeHtml(s) {
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 </script>
 </body>
